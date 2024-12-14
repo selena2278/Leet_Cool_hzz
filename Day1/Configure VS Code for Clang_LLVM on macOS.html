@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://code.visualstudio.com/docs/cpp/config-clang-mac#_prerequisites -->
+<html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="awa-expId" content="vscw_aaflight1016_treatment:103440;">
+	<meta name="awa-env" content="prod">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="hNs7DXrTySP_X-0P_AC0WulAXvUwgSXEmgfcO2r79dw">
+
+	<!-- Twitter and Facebook OpenGraph Metadata-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@code">
+
+	<meta name="description" content="Configure the C++ extension in Visual Studio Code to target Clang/LLVM">
+<meta name="keywords" content="">
+<meta name="ms.prod" content="vs-code">
+<meta name="ms.TOCTitle" content="Clang on macOS">
+<meta name="ms.ContentId" content="6ef32219-81ad-4d73-84b8-8d4384a45f8a">
+<meta name="ms.date" content="12/14/2023">
+<meta name="ms.topic" content="conceptual">
+<!-- Twitter and Facebook OpenGraph Metadata-->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://code.visualstudio.com/docs/cpp/config-clang-mac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Configure VS Code for Clang/LLVM on macOS">
+<meta property="og:description" content="Configure the C++ extension in Visual Studio Code to target Clang/LLVM">
+
+<meta property="og:image" content="https://code.visualstudio.com/opengraphimg/opengraph-docs.png">
+
+
+
+	<link rel="shortcut icon" href="https://code.visualstudio.com/favicon.ico" sizes="128x128">
+	<link rel="apple-touch-icon" href="https://code.visualstudio.com/apple-touch-icon.png">
+
+	<title>Configure VS Code for Clang/LLVM on macOS</title>
+
+	<link rel="stylesheet" href="./Configure VS Code for Clang_LLVM on macOS_files/bootstrap.min.css">
+	<link rel="stylesheet" href="./Configure VS Code for Clang_LLVM on macOS_files/style.css">
+
+	<script src="./Configure VS Code for Clang_LLVM on macOS_files/wcp-consent.js"></script>
+	<script type="text/javascript" src="./Configure VS Code for Clang_LLVM on macOS_files/ms.analytics-web-4.min.js"></script>
+	
+	<script type="text/javascript">
+	// Leave as var; siteConsent is initialized and referenced elsewhere.
+	var siteConsent = null;
+	
+	const GPC_DataSharingOptIn = false;
+	WcpConsent.onInitCallback(function () {
+		window.appInsights = new oneDS.ApplicationInsights();
+		window.appInsights.initialize({
+			instrumentationKey: "1a3eb3104447440391ad5f2a6ee06a0a-62879566-bc58-4741-9650-302bf2af703f-7103",
+			propertyConfiguration: {
+				userConsented: false,
+				gpcDataSharingOptIn: false,
+				callback: {
+					userConsentDetails: siteConsent ? siteConsent.getConsent : undefined
+				},
+			},
+			cookieCfg: {
+				ignoreCookies: ["MSCC"]
+			},
+			webAnalyticsConfiguration:{ // Web Analytics Plugin configuration
+				urlCollectQuery: true,
+				urlCollectHash: true,
+				autoCapture: {
+					scroll: true,
+					pageView: true,
+					onLoad: true,
+					onUnload: true,
+					click: true,
+					resize: true,
+					jsError: true
+				}
+			}
+		}, []);
+	
+		window.appInsights.getPropertyManager().getPropertiesContext().web.gpcDataSharingOptIn = GPC_DataSharingOptIn;
+	});
+	</script>
+	<link rel="alternate" type="application/atom+xml" title="RSS Feed for code.visualstudio.com" href="https://code.visualstudio.com/feed.xml">
+<style id="ms-consent-banner-main-styles">.w8hcgFksdo30C8w-bygqu{color:#000}.ydkKdaztSS0AeHWIeIHsQ a{color:#0067B8}.erL690_8JwUW-R4bJRcfl{background-color:#EBEBEB;border:none;color:#000}.erL690_8JwUW-R4bJRcfl:enabled:hover{color:#000;background-color:#DBDBDB;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:none}.erL690_8JwUW-R4bJRcfl:enabled:focus{background-color:#DBDBDB;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:2px solid #000}.erL690_8JwUW-R4bJRcfl:disabled{opacity:1;color:rgba(0,0,0,0.2);background-color:rgba(0,0,0,0.2);border:none}._1zNQOqxpBFSokeCLGi_hGr{border:none;background-color:#0067B8;color:#fff}._1zNQOqxpBFSokeCLGi_hGr:enabled:hover{color:#fff;background-color:#0067B8;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:none}._1zNQOqxpBFSokeCLGi_hGr:enabled:focus{background-color:#0067B8;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:2px solid #000}._1zNQOqxpBFSokeCLGi_hGr:disabled{opacity:1;color:rgba(0,0,0,0.2);background-color:rgba(0,120,215,0.2);border:none}._23tra1HsiiP6cT-Cka-ycB{position:relative;display:flex;z-index:9999;width:100%;background-color:#F2F2F2;justify-content:space-between;text-align:left}div[dir="rtl"]._23tra1HsiiP6cT-Cka-ycB{text-align:right}._1Upc2NjY8AlDn177YoVj0y{margin:0;padding-left:5%;padding-top:8px;padding-bottom:8px}div[dir="rtl"] ._1Upc2NjY8AlDn177YoVj0y{margin:0;padding:8px 5% 8px 0;float:none}._23tra1HsiiP6cT-Cka-ycB svg{fill:none;max-width:none;max-height:none}._1V_hlU-7jdtPiooHMu89BB{display:table-cell;padding:12px;width:24px;height:24px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:24px;line-height:0}.f6QKJD7fhSbnJLarTL-W-{display:table-cell;vertical-align:middle;padding:0;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:13px;line-height:16px}.f6QKJD7fhSbnJLarTL-W- a{text-decoration:underline}._2j0fmugLb1FgYz6KPuB91w{display:inline-block;margin-left:5%;margin-right:5%;min-width:40%;min-width:calc((150px + 3 * 4px) * 2 + 150px);min-width:-webkit-fit-content;min-width:-moz-fit-content;min-width:fit-content;align-self:center;position:relative}._1XuCi2WhiqeWRUVp3pnFG3{margin:4px;padding:5px;min-width:150px;min-height:36px;vertical-align:top;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._1XuCi2WhiqeWRUVp3pnFG3:focus{box-sizing:border-box}._1XuCi2WhiqeWRUVp3pnFG3:disabled{cursor:not-allowed}._2bvsb3ubApyZ0UGoQA9O9T{display:block;position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background-color:rgba(255,255,255,0.6);overflow:auto;text-align:left}div[dir="rtl"]._2bvsb3ubApyZ0UGoQA9O9T{text-align:right}div[dir="rtl"] ._2bvsb3ubApyZ0UGoQA9O9T{left:auto;right:0}.AFsJE948muYyzCMktdzuk{position:relative;top:8%;margin-bottom:40px;margin-left:auto;margin-right:auto;box-sizing:border-box;width:640px;background-color:#fff;border:1px solid #0067B8}._3kWyBRbW_dgnMiEyx06Fu4{float:right;z-index:1;margin:2px;padding:12px;border:none;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:13px;line-height:13px;display:flex;align-items:center;text-align:center;color:#666;background-color:#fff}div[dir="rtl"] ._3kWyBRbW_dgnMiEyx06Fu4{margin:2px;padding:12px;float:left}.uCYvKvHXrhjNgflv1VqdD{position:static;margin-top:36px;margin-left:36px;margin-right:36px}._17pX1m9O_W--iZbDt3Ta5r{margin-top:0;margin-bottom:12px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:20px;line-height:24px;text-transform:none}._1kBkHQ1V1wu3kl-YcLgUr6{height:446px;overflow:auto}._20_nXDf6uFs9Q6wxRXG-I-{margin-top:0;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px}._20_nXDf6uFs9Q6wxRXG-I- a{text-decoration:underline}dl._2a0NH_GDQEQe5Ynfo7suVH{margin-top:36px;margin-bottom:0;padding:0;list-style:none;text-transform:none}dt._3j_LCPv7fyXv3A8FIXVwZ4{margin-top:20px;float:none;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:18px;line-height:24px;list-style:none}.k-vxTGFbdq1aOZB2HHpjh{margin:0;padding:0;border:none}._2Bucyy75c_ogoU1g-liB5R{margin:0;padding:0;border-bottom:none;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:18px;line-height:24px;text-transform:none}._63gwfzV8dclrsl2cfd90r{display:inline-block;margin-top:0;margin-bottom:13px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px}._1l8wM_4mRYGz3Iu7l3BZR7{display:block}._2UE03QS02aZGkslegN_F-i{display:inline-block;position:relative;left:5px;margin-bottom:13px;margin-right:34px;padding:3px}div[dir="rtl"] ._2UE03QS02aZGkslegN_F-i{margin:0 0 13px 34px;padding:3px;float:none}div[dir="rtl"] ._2UE03QS02aZGkslegN_F-i{left:auto;right:5px}._23tra1HsiiP6cT-Cka-ycB *::before,._2bvsb3ubApyZ0UGoQA9O9T *::before,._23tra1HsiiP6cT-Cka-ycB *::after,._2bvsb3ubApyZ0UGoQA9O9T *::after{box-sizing:inherit}._1HSFn0HzGo6w4ADApV8-c4{outline:2px solid rgba(0,0,0,0.8)}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2{display:inline-block;position:relative;margin-top:0;margin-left:0;margin-right:0;height:0;width:0;border-radius:0;cursor:pointer;outline:none;box-sizing:border-box;-webkit-appearance:none;-moz-appearance:none;appearance:none}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2+label::before{display:block;position:absolute;top:5px;left:3px;height:19px;width:19px;content:"";border-radius:50%;border:1px solid #000;background-color:#fff}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2+label::before{left:auto;right:3px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::before{border:1px solid #0067B8}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:rgba(0,0,0,0.8)}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::before{border:1px solid #0067B8}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:#000}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked+label::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:#000}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked+label::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled+label{cursor:not-allowed}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled+label::before{border:1px solid rgba(0,0,0,0.2);background-color:rgba(0,0,0,0.2)}._3RJzeL3l9Rl_lAQEm6VwdX{display:block;position:static;float:right;margin-top:0;margin-bottom:0;margin-left:19px;margin-right:0;padding-top:0;padding-bottom:0;padding-left:8px;padding-right:0;width:80%;width:calc(100% - 19px);font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-transform:none;cursor:pointer;box-sizing:border-box}div[dir="rtl"] ._3RJzeL3l9Rl_lAQEm6VwdX{margin:0 19px 0 0;padding:0 8px 0 0;float:left}.nohp3sIG12ZBhzcMnPala{margin-top:20px;margin-bottom:48px}._2uhaEsmeotZ3P-M0AXo2kF{padding:0;width:278px;height:36px;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._2uhaEsmeotZ3P-M0AXo2kF:focus{box-sizing:border-box}._2uhaEsmeotZ3P-M0AXo2kF:disabled{cursor:not-allowed}._3tOu1FJ59c_xz_PmI1lKV5{float:right;padding:0;width:278px;height:36px;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._3tOu1FJ59c_xz_PmI1lKV5:focus{box-sizing:border-box}._3tOu1FJ59c_xz_PmI1lKV5:disabled{cursor:not-allowed}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0;padding:0;float:left}@media only screen and (max-width: 768px){._2j0fmugLb1FgYz6KPuB91w,._1Upc2NjY8AlDn177YoVj0y{padding-top:8px;padding-bottom:12px;padding-left:3.75%;padding-right:3.75%;margin:0;width:92.5%}._23tra1HsiiP6cT-Cka-ycB{display:block}._1XuCi2WhiqeWRUVp3pnFG3{margin-bottom:8px;margin-left:0;margin-right:0;width:100%}._2bvsb3ubApyZ0UGoQA9O9T{overflow:hidden}.AFsJE948muYyzCMktdzuk{top:1.8%;width:93.33%;height:96.4%;overflow:hidden}.uCYvKvHXrhjNgflv1VqdD{margin-top:24px;margin-left:24px;margin-right:24px;height:100%}._1kBkHQ1V1wu3kl-YcLgUr6{height:62%;height:calc(100% - 188px);min-height:50%}._2uhaEsmeotZ3P-M0AXo2kF{width:100%}._3tOu1FJ59c_xz_PmI1lKV5{margin-bottom:12px;margin-left:0;width:100%}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0 0 12px 0;padding:0;float:none}}@media only screen and (max-width: 768px) and (orientation: landscape), only screen and (max-height: 260px), only screen and (max-width: 340px){.AFsJE948muYyzCMktdzuk{overflow:auto}}@media only screen and (max-height: 260px), only screen and (max-width: 340px){._1XuCi2WhiqeWRUVp3pnFG3{min-width:0}._3kWyBRbW_dgnMiEyx06Fu4{padding:3%}.uCYvKvHXrhjNgflv1VqdD{margin-top:3%;margin-left:3%;margin-right:3%}._17pX1m9O_W--iZbDt3Ta5r{margin-bottom:3%}._1kBkHQ1V1wu3kl-YcLgUr6{height:calc(79% - 64px)}.nohp3sIG12ZBhzcMnPala{margin-top:5%;margin-bottom:10%}._3tOu1FJ59c_xz_PmI1lKV5{margin-bottom:3%}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0 0 3% 0;padding:0;float:none}}
+</style><style type="text/css" id="ms-consent-banner-theme-styles">._23tra1HsiiP6cT-Cka-ycB {
+            background-color: #F2F2F2 !important;
+        }.w8hcgFksdo30C8w-bygqu {
+            color: #000000 !important;
+        }.ydkKdaztSS0AeHWIeIHsQ a {
+            color: #0067B8 !important;
+        }._2bvsb3ubApyZ0UGoQA9O9T {
+            background-color: rgba(255, 255, 255, 0.6) !important;
+        }.AFsJE948muYyzCMktdzuk {
+            background-color: #FFFFFF !important;
+            border: 1px solid #0067B8 !important;
+        }._3kWyBRbW_dgnMiEyx06Fu4 {
+            color: #666666 !important;
+            background-color: #FFFFFF !important;
+        }._1zNQOqxpBFSokeCLGi_hGr {
+            border: none !important;
+            background-color: #0067B8 !important;
+            color: #FFFFFF !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:enabled:hover {
+            color: #FFFFFF !important;
+            background-color: #0067B8 !important;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25) !important;
+            border: none !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:enabled:focus {
+            background-color: #0067B8 !important;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25) !important;
+            border: 2px solid #000000 !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:disabled {
+            opacity: 1 !important;
+            color: rgba(0, 0, 0, 0.2) !important;
+            background-color: rgba(0, 120, 215, 0.2) !important;
+            border: none !important;
+        }.erL690_8JwUW-R4bJRcfl {
+            border: none !important;
+            background-color: #EBEBEB !important;
+            color: #000000 !important;
+        }.erL690_8JwUW-R4bJRcfl:enabled:hover {
+            color: #000000 !important;
+            background-color: #DBDBDB !important;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25) !important;
+            border: none !important;
+        }.erL690_8JwUW-R4bJRcfl:enabled:focus {
+            background-color: #DBDBDB !important;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25) !important;
+            border: 2px solid #000000 !important;
+        }.erL690_8JwUW-R4bJRcfl:disabled {
+            opacity: 1 !important;
+            color: rgba(0, 0, 0, 0.2) !important;
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            border: none !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label::before {
+            border: 1px solid #000000 !important;
+            background-color: #FFFFFF !important;
+        }._1HSFn0HzGo6w4ADApV8-c4 {
+            outline: 2px solid rgba(0, 0, 0, 0.8) !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked + label::after {
+            background-color: #000000 !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:hover::before {
+            border: 1px solid #0067B8 !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:hover::after {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:focus::before {
+            border: 1px solid #0067B8 !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:focus::after {
+            background-color: #000000 !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled + label::before {
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
+            background-color: rgba(0, 0, 0, 0.2) !important;
+        }</style></head>
+
+<body class="osx">
+	<!-- Setting theme here to avoid FOUC -->
+	<script>
+		function setTheme(themeName) {
+			if (themeName === 'dark') {
+				document.documentElement.removeAttribute('data-theme'); // dark is default, so no data-theme attribute needed
+			}
+
+			if (themeName === 'light') {
+				document.documentElement.setAttribute('data-theme', themeName);
+			}
+			return;
+		}
+
+		// Determine initial theme: user preference or system preference
+		let theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+		setTheme(theme); // Apply the initial theme
+
+		// Listen for changes in the system theme preference
+		window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+			if (!localStorage.getItem('theme')) { // Only if no user preference is saved
+				setTheme(e.matches ? 'dark' : 'light');
+			}
+		});
+	</script>
+
+	<div id="main">
+			<div class="navbar-fixed-container">
+				<div class="navbar navbar-inverse navbar-fixed-top affix" data-spy="affix" data-offset-top="1">
+					<div id="cookie-banner"><div id="wcpConsentBannerCtrl" class="_23tra1HsiiP6cT-Cka-ycB" dir="ltr" role="alert">
+        <div class="_1Upc2NjY8AlDn177YoVj0y">
+            <span class="_1V_hlU-7jdtPiooHMu89BB w8hcgFksdo30C8w-bygqu">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 44 44" width="24px" height="24px" fill="none" stroke="currentColor">
+          <circle cx="22" cy="22" r="20" stroke-width="2"></circle>
+          <line x1="22" x2="22" y1="18" y2="33" stroke-width="3"></line>
+          <line x1="22" x2="22" y1="12" y2="15" stroke-width="3"></line>
+        </svg>
+        </span> <!--  used for icon  -->
+            <p class="f6QKJD7fhSbnJLarTL-W- ydkKdaztSS0AeHWIeIHsQ w8hcgFksdo30C8w-bygqu">
+                We use optional cookies to improve your experience on our websites, such as through social media connections, and to display personalized advertising based on your online activity. If you reject optional cookies, only cookies necessary to provide you the services will be used. You may change your selection by clicking “Manage Cookies” at the bottom of the page. <a target="_blank" href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy Statement</a> <a target="_blank" href="https://aka.ms/3rdpartycookies">Third-Party Cookies</a>
+            </p>
+        </div>
+
+        <div class="_2j0fmugLb1FgYz6KPuB91w">
+            <button type="button" class="_1XuCi2WhiqeWRUVp3pnFG3 erL690_8JwUW-R4bJRcfl">Accept</button>
+            <button type="button" class="_1XuCi2WhiqeWRUVp3pnFG3 erL690_8JwUW-R4bJRcfl">Reject</button>
+            <button type="button" class="_1XuCi2WhiqeWRUVp3pnFG3 erL690_8JwUW-R4bJRcfl">Manage cookies</button>
+        </div>
+        </div></div>		<nav role="navigation" aria-label="Top Level">
+						<div class="container">
+							<div class="nav navbar-header">
+								<a class="navbar-brand" href="https://code.visualstudio.com/"><span>Visual Studio Code</span></a>
+								<div class="tabloopElement" tabindex="0" style="display: none;"></div><button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Expand and Collapse Menu">
+				                    <span class="icon-bar"></span>
+				                    <span class="icon-bar"></span>
+				                    <span class="icon-bar"></span>
+					    		</button>
+				            </div>
+				            <div class="navbar-collapse collapse" style="max-height: min(60vh, 400px);">
+								<ul class="nav navbar-nav navbar-left">
+									<li class="active"><a id="nav-docs" href="https://code.visualstudio.com/docs">Docs</a></li>
+									<li><a id="nav-updates" href="https://code.visualstudio.com/updates">Updates</a></li>
+									<li><a id="nav-blogs" href="https://code.visualstudio.com/blogs">Blog</a></li>
+									<li><a id="nav-extend" href="https://code.visualstudio.com/api">API</a></li>
+									<li><a href="https://marketplace.visualstudio.com/VSCode" target="_blank" rel="noopener" id="nav-extensions">Extensions</a></li>
+									<li><a id="nav-faqs" href="https://code.visualstudio.com/docs/supporting/faq">FAQ</a></li>
+									<li class="search visible-xs visible-sm"><a href="https://code.visualstudio.com/Search">Search</a></li>
+									<li><a id="nav-copilot" href="https://code.visualstudio.com/docs/copilot/overview">GitHub Copilot</a></li>
+								</ul>
+				                
+			
+								<ul class="nav navbar-nav navbar-right" role="presentation">
+									<li>
+										<button type="button" class="theme-switch" id="theme-toggle">
+											<img class="theme-icon-light" src="./Configure VS Code for Clang_LLVM on macOS_files/theme-light.svg" alt="Switch to the dark theme">
+											<img class="theme-icon-dark" src="./Configure VS Code for Clang_LLVM on macOS_files/theme-dark.svg" alt="Switch to the light theme">
+										</button>
+									</li>
+									<li>
+										<a href="https://code.visualstudio.com/Search" title="Search" class="btn search-btn" id="nav-search">
+											<img class="search-icon-light" src="./Configure VS Code for Clang_LLVM on macOS_files/search.svg" width="16px" height="16px" alt="Search">
+											<img class="search-icon-dark" src="./Configure VS Code for Clang_LLVM on macOS_files/search-dark.svg" width="16px" height="16px" alt="Search">
+										</a>
+									</li>
+									<li class="search" role="presentation">
+										<form class="nav-search search-form" role="search" aria-label="Search">
+											<div class="input-group" role="presentation">
+												<input type="text" name="q" class="search-box form-control" placeholder="Search Docs" aria-label="Search text">
+												<span class="input-group-btn">
+													<button tabindex="0" class="btn" type="submit" aria-label="Search">
+														<img class="search-icon-dark" src="./Configure VS Code for Clang_LLVM on macOS_files/search-dark.svg" alt="Search">
+														<img class="search-icon-light" src="./Configure VS Code for Clang_LLVM on macOS_files/search.svg" alt="Search">
+													</button>
+												</span>
+											</div>
+										</form>						</li>
+									<!-- this was hiden in the home and download page, keeping it for now -->
+									<li><a class="link-button" href="https://code.visualstudio.com/Download" id="nav-download">
+									<span>Download</span></a><div class="tabloopElement" tabindex="0" style="display: none;"></div></li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>			<div class="updates-banner  ">
+				<div class="container">
+					<p class="message"><a href="https://code.visualstudio.com/updates" id="banner-link-updates">Version 1.96</a> is now available! Read about the new features and fixes from November.</p>
+				</div>
+				<div tabindex="0" role="button" title="Dismiss this update" class="dismiss-btn" id="banner-dismiss-btn"><span class="sr-only">Dismiss this update</span><span aria-hidden="true" class="glyph-icon"></span></div>
+			</div>			<!-- This div wraps around the entire site -->
+			<!-- The body itself should already have a main tag -->
+			<div id="main-content">
+				<script>
+    function closeReportIssue() {
+        var element = document.getElementById('surveypopup');
+        element.parentElement.removeChild(element);
+    }
+
+    function reportIssue(tutorial, page) {
+        var div = document.createElement('div');
+        div.innerHTML = '<div id="surveypopup" class="overlay visible"><div class="surveypopup"><div id="surveytitle">Tell us more<a href="javascript:void(0)" onclick="closeReportIssue()">X</a></div><div id="surveydiv"><iframe frameBorder="0" scrolling="0" src="https://www.research.net/r/PWZWZ52?tutorial=' + tutorial + '&step=' + page + '"></iframe></div></div></div>';
+        document.body.appendChild(div.children[0]);
+    }
+</script>
+
+<div class="container body-content docs">
+    <div class="row">
+        <!-- left nav -->
+        <div class="col-xs-12 col-md-2 docs-navbar-container">
+            <nav id="docs-navbar" aria-label="Topics" class="docs-nav visible-md visible-lg">
+            	<ul class="nav" id="main-nav">
+            		<li>
+            			<a class="docs-home" href="https://code.visualstudio.com/docs">Overview</a>
+            		</li>
+            		
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#setup-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Setup</a>
+            					<ul id="setup-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/setup-overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/linux">Linux</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/mac">macOS</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/windows">Windows</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/raspberry-pi">Raspberry Pi</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/network">Network</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/additional-components">Additional Components</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/enterprise">Enterprise</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/setup/uninstall">Uninstall</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#getstarted-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Get Started</a>
+            					<ul id="getstarted-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/getting-started">Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/introvideos">Intro Videos</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/tips-and-tricks">Tips and Tricks</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/userinterface">User Interface</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/themes">Themes</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/settings">Settings</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/keybindings">Key Bindings</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/locales">Display Language</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/telemetry">Telemetry</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/getstarted/educators-and-students">Educators &amp; Students</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#editor-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">User Guide</a>
+            					<ul id="editor-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/codebasics">Basic Editing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/extension-marketplace">Extension Marketplace</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/intellisense">IntelliSense</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/editingevolved">Code Navigation</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/refactoring">Refactoring</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/debugging">Debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/testing">Testing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/vscode-web">VS Code for the Web</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/tasks">Tasks</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/profiles">Profiles</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/settings-sync">Settings Sync</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/userdefinedsnippets">Snippets</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/emmet">Emmet</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/command-line">Command Line Interface</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/workspaces">Workspaces</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/workspace-trust">Workspace Trust</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/multi-root-workspaces">Multi-root Workspaces</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/accessibility">Accessibility</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/voice">Voice Interactions</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/custom-layout">Custom Layout</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/editor/port-forwarding">Port Forwarding</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#sourcecontrol-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Source Control</a>
+            					<ul id="sourcecontrol-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/sourcecontrol/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/sourcecontrol/intro-to-git">Introduction to Git</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/sourcecontrol/github">Collaborate on GitHub</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/sourcecontrol/faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#terminal-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Terminal</a>
+            					<ul id="terminal-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/getting-started">Getting Started Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/basics">Terminal Basics</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/profiles">Terminal Profiles</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/shell-integration">Shell Integration</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/appearance">Appearance</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/terminal/advanced">Advanced</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#copilot-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">GitHub Copilot</a>
+            					<ul id="copilot-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-vscode-features">Copilot Cheat Sheet</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/setup">Setup</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/getting-started">Quickstart</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/ai-powered-suggestions">Code Completions</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-chat">Copilot Chat</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/getting-started-chat">Copilot Chat Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-edits">Copilot Edits</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/prompt-crafting">Best Practices</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/workspace-context">Workspace Context</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-customization">Customizing Copilot</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview">Copilot Extensibility</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/copilot-settings">Settings Reference</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/copilot/faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#languages-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Languages</a>
+            					<ul id="languages-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/javascript">JavaScript</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/json">JSON</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/html">HTML</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/css">CSS, SCSS and Less</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/typescript">TypeScript</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/markdown">Markdown</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/powershell">PowerShell</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/cpp">C++</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/java">Java</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/php">PHP</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/python">Python</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/julia">Julia</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/r">R</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/ruby">Ruby</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/rust">Rust</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/go">Go</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/tsql">T-SQL</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/csharp">C#</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/dotnet">.NET</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/languages/polyglot">Polyglot</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#nodejs-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Node.js / JavaScript</a>
+            					<ul id="nodejs-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/working-with-javascript">Working with JavaScript</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/nodejs-tutorial">Node.js Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/nodejs-debugging">Node.js Debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/nodejs-deployment">Deploy Node.js Apps</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/browser-debugging">Browser Debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/angular-tutorial">Angular Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/reactjs-tutorial">React Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/vuejs-tutorial">Vue Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/debugging-recipes">Debugging Recipes</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/profiling">Performance Profiling</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/nodejs/extensions">Extensions</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#typescript-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">TypeScript</a>
+            					<ul id="typescript-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/typescript/typescript-tutorial">Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/typescript/typescript-compiling">Compiling</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/typescript/typescript-editing">Editing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/typescript/typescript-refactoring">Refactoring</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/typescript/typescript-debugging">Debugging</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#python-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Python</a>
+            					<ul id="python-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/python-quick-start">Quick Start</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/python-tutorial">Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/run">Run Python Code</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/editing">Editing Code</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/linting">Linting</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/formatting">Formatting</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/debugging">Debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/environments">Environments</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/testing">Testing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/jupyter-support-py">Python Interactive</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/tutorial-django">Django Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/tutorial-fastapi">FastAPI Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/tutorial-flask">Flask Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/tutorial-create-containers">Create containers</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/python-on-azure">Deploy Python Apps</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/python-web">Python in the Web</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/python/settings-reference">Settings Reference</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#java-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Java</a>
+            					<ul id="java-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-tutorial">Getting Started</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-editing">Navigate and Edit</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-refactoring">Refactoring</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-linting">Formatting and Linting</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-project">Project Management</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-build">Build Tools</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-debugging">Run and Debug</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-testing">Testing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-spring-boot">Spring Boot</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-tomcat-jetty">Application Servers</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-on-azure">Deploy Java Apps</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-gui">GUI Applications</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/extensions">Extensions</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/java/java-faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel active expanded">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#cpp-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="true">C++</a>
+            					<ul id="cpp-articles" class="collapse in" aria-expanded="true">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/introvideos-cpp">Intro Videos</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/config-linux">GCC on Linux</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/config-mingw">GCC on Windows</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/config-wsl">GCC on Windows Subsystem for Linux</a>
+            						</li>
+            					
+            						<li class="active">
+            							<a href="https://code.visualstudio.com/docs/cpp/config-clang-mac" aria-label="Current Page: Clang on macOS">Clang on macOS</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/config-msvc">Microsoft C++ on Windows</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/build-with-cmake">Build with CMake</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/cmake-linux">CMake Tools on Linux</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/cmake-quickstart">CMake Quick Start</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/cpp-ide">Editing and Navigating</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/cpp-debug">Debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/cpp-refactoring">Refactoring</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/launch-json-reference">Configure debugging</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/customize-default-settings-cpp">Settings</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/configure-intellisense">Configure IntelliSense</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/configure-intellisense-crosscompilation">Configure IntelliSense for cross-compiling</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/cpp/faq-cpp">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#csharp-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">C#</a>
+            					<ul id="csharp-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/introvideos-csharp">Intro Videos</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/get-started">Get Started</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/navigate-edit">Navigate and Edit</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/intellicode">IntelliCode</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/refactoring">Refactoring</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/formatting-linting">Formatting and Linting</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/project-management">Project Management</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/build-tools">Build Tools</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/package-management">Package Management</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/debugging">Run and Debug</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/testing">Testing</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/csharp/cs-dev-kit-faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#containers-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Docker</a>
+            					<ul id="containers-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/quickstart-node">Node.js</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/quickstart-python">Python</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/quickstart-aspnet-core">ASP.NET Core</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/debug-common">Debug</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/docker-compose">Docker Compose</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/quickstart-container-registries">Registries</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/app-service">Deploy to Azure</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/choosing-dev-environment">Choose a dev environment</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/reference">Customize</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/bridge-to-kubernetes">Develop with Kubernetes</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/containers/troubleshooting">Tips and Tricks</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#datascience-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Data Science</a>
+            					<ul id="datascience-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/jupyter-notebooks">Jupyter Notebooks</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/data-science-tutorial">Data Science Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/python-interactive">Python Interactive</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/data-wrangler-quick-start">Data Wrangler Quick Start</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/data-wrangler">Data Wrangler</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/pytorch-support">PyTorch Support</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/azure-machine-learning">Azure Machine Learning</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/jupyter-kernel-management">Manage Jupyter Kernels</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/datascience/notebooks-web">Jupyter Notebooks on the web</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#azure-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Azure</a>
+            					<ul id="azure-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/gettingstarted">Getting Started</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/deployment">Deployment</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/docker">Docker</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/aksextensions">Azure Kubernetes Service</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/kubernetes">Kubernetes</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/mongodb">MongoDB</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/azure/remote-debugging">Remote Debugging for Node.js</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#remote-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Remote</a>
+            					<ul id="remote-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/remote-overview">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/ssh">SSH</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/dev-containers">Dev Containers</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/wsl">Windows Subsystem for Linux</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/codespaces">GitHub Codespaces</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/vscode-server">VS Code Server</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/tunnels">Tunnels</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/ssh-tutorial">SSH Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/wsl-tutorial">WSL Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/troubleshooting">Tips and Tricks</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/remote/faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            				<li class="panel collapsed">
+            					<a class="area" role="button" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#devcontainers-articles" data-parent="#main-nav" data-toggle="collapse" aria-expanded="false">Dev Containers</a>
+            					<ul id="devcontainers-articles" class="collapse " aria-expanded="false">
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/containers">Overview</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/tutorial">Tutorial</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/attach-container">Attach to Container</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/create-dev-container">Create a Dev Container</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/containers-advanced">Advanced Containers</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/devcontainerjson-reference">devcontainer.json</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/devcontainer-cli">Dev Container CLI</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/tips-and-tricks">Tips and Tricks</a>
+            						</li>
+            					
+            						<li>
+            							<a href="https://code.visualstudio.com/docs/devcontainers/faq">FAQ</a>
+            						</li>
+            					
+            					</ul>
+            				</li>
+            			
+            		
+            			
+            		
+            	</ul>
+            </nav>
+            <nav id="small-nav" aria-label="Topics" class="docs-nav hidden-md hidden-lg">
+            	<label class="faux-h4" for="small-nav-dropdown">Topics</label>
+            	<select id="small-nav-dropdown" aria-label="topics">
+            		<option value="/docs">Overview</option>
+            		
+            			
+            		
+            			
+            				<optgroup label="Setup">
+            				
+            					<option value="/docs/setup/setup-overview">Overview</option>
+            				
+            					<option value="/docs/setup/linux">Linux</option>
+            				
+            					<option value="/docs/setup/mac">macOS</option>
+            				
+            					<option value="/docs/setup/windows">Windows</option>
+            				
+            					<option value="/docs/setup/raspberry-pi">Raspberry Pi</option>
+            				
+            					<option value="/docs/setup/network">Network</option>
+            				
+            					<option value="/docs/setup/additional-components">Additional Components</option>
+            				
+            					<option value="/docs/setup/enterprise">Enterprise</option>
+            				
+            					<option value="/docs/setup/uninstall">Uninstall</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Get Started">
+            				
+            					<option value="/docs/getstarted/getting-started">Tutorial</option>
+            				
+            					<option value="/docs/getstarted/introvideos">Intro Videos</option>
+            				
+            					<option value="/docs/getstarted/tips-and-tricks">Tips and Tricks</option>
+            				
+            					<option value="/docs/getstarted/userinterface">User Interface</option>
+            				
+            					<option value="/docs/getstarted/themes">Themes</option>
+            				
+            					<option value="/docs/getstarted/settings">Settings</option>
+            				
+            					<option value="/docs/getstarted/keybindings">Key Bindings</option>
+            				
+            					<option value="/docs/getstarted/locales">Display Language</option>
+            				
+            					<option value="/docs/getstarted/telemetry">Telemetry</option>
+            				
+            					<option value="/docs/getstarted/educators-and-students">Educators &amp; Students</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="User Guide">
+            				
+            					<option value="/docs/editor/codebasics">Basic Editing</option>
+            				
+            					<option value="/docs/editor/extension-marketplace">Extension Marketplace</option>
+            				
+            					<option value="/docs/editor/intellisense">IntelliSense</option>
+            				
+            					<option value="/docs/editor/editingevolved">Code Navigation</option>
+            				
+            					<option value="/docs/editor/refactoring">Refactoring</option>
+            				
+            					<option value="/docs/editor/debugging">Debugging</option>
+            				
+            					<option value="/docs/editor/testing">Testing</option>
+            				
+            					<option value="/docs/editor/vscode-web">VS Code for the Web</option>
+            				
+            					<option value="/docs/editor/tasks">Tasks</option>
+            				
+            					<option value="/docs/editor/profiles">Profiles</option>
+            				
+            					<option value="/docs/editor/settings-sync">Settings Sync</option>
+            				
+            					<option value="/docs/editor/userdefinedsnippets">Snippets</option>
+            				
+            					<option value="/docs/editor/emmet">Emmet</option>
+            				
+            					<option value="/docs/editor/command-line">Command Line Interface</option>
+            				
+            					<option value="/docs/editor/workspaces">Workspaces</option>
+            				
+            					<option value="/docs/editor/workspace-trust">Workspace Trust</option>
+            				
+            					<option value="/docs/editor/multi-root-workspaces">Multi-root Workspaces</option>
+            				
+            					<option value="/docs/editor/accessibility">Accessibility</option>
+            				
+            					<option value="/docs/editor/voice">Voice Interactions</option>
+            				
+            					<option value="/docs/editor/custom-layout">Custom Layout</option>
+            				
+            					<option value="/docs/editor/port-forwarding">Port Forwarding</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Source Control">
+            				
+            					<option value="/docs/sourcecontrol/overview">Overview</option>
+            				
+            					<option value="/docs/sourcecontrol/intro-to-git">Introduction to Git</option>
+            				
+            					<option value="/docs/sourcecontrol/github">Collaborate on GitHub</option>
+            				
+            					<option value="/docs/sourcecontrol/faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Terminal">
+            				
+            					<option value="/docs/terminal/getting-started">Getting Started Tutorial</option>
+            				
+            					<option value="/docs/terminal/basics">Terminal Basics</option>
+            				
+            					<option value="/docs/terminal/profiles">Terminal Profiles</option>
+            				
+            					<option value="/docs/terminal/shell-integration">Shell Integration</option>
+            				
+            					<option value="/docs/terminal/appearance">Appearance</option>
+            				
+            					<option value="/docs/terminal/advanced">Advanced</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="GitHub Copilot">
+            				
+            					<option value="/docs/copilot/overview">Overview</option>
+            				
+            					<option value="/docs/copilot/copilot-vscode-features">Copilot Cheat Sheet</option>
+            				
+            					<option value="/docs/copilot/setup">Setup</option>
+            				
+            					<option value="/docs/copilot/getting-started">Quickstart</option>
+            				
+            					<option value="/docs/copilot/ai-powered-suggestions">Code Completions</option>
+            				
+            					<option value="/docs/copilot/copilot-chat">Copilot Chat</option>
+            				
+            					<option value="/docs/copilot/getting-started-chat">Copilot Chat Tutorial</option>
+            				
+            					<option value="/docs/copilot/copilot-edits">Copilot Edits</option>
+            				
+            					<option value="/docs/copilot/prompt-crafting">Best Practices</option>
+            				
+            					<option value="/docs/copilot/workspace-context">Workspace Context</option>
+            				
+            					<option value="/docs/copilot/copilot-customization">Customizing Copilot</option>
+            				
+            					<option value="/docs/copilot/copilot-extensibility-overview">Copilot Extensibility</option>
+            				
+            					<option value="/docs/copilot/copilot-settings">Settings Reference</option>
+            				
+            					<option value="/docs/copilot/faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Languages">
+            				
+            					<option value="/docs/languages/overview">Overview</option>
+            				
+            					<option value="/docs/languages/javascript">JavaScript</option>
+            				
+            					<option value="/docs/languages/json">JSON</option>
+            				
+            					<option value="/docs/languages/html">HTML</option>
+            				
+            					<option value="/docs/languages/css">CSS, SCSS and Less</option>
+            				
+            					<option value="/docs/languages/typescript">TypeScript</option>
+            				
+            					<option value="/docs/languages/markdown">Markdown</option>
+            				
+            					<option value="/docs/languages/powershell">PowerShell</option>
+            				
+            					<option value="/docs/languages/cpp">C++</option>
+            				
+            					<option value="/docs/languages/java">Java</option>
+            				
+            					<option value="/docs/languages/php">PHP</option>
+            				
+            					<option value="/docs/languages/python">Python</option>
+            				
+            					<option value="/docs/languages/julia">Julia</option>
+            				
+            					<option value="/docs/languages/r">R</option>
+            				
+            					<option value="/docs/languages/ruby">Ruby</option>
+            				
+            					<option value="/docs/languages/rust">Rust</option>
+            				
+            					<option value="/docs/languages/go">Go</option>
+            				
+            					<option value="/docs/languages/tsql">T-SQL</option>
+            				
+            					<option value="/docs/languages/csharp">C#</option>
+            				
+            					<option value="/docs/languages/dotnet">.NET</option>
+            				
+            					<option value="/docs/languages/polyglot">Polyglot</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Node.js / JavaScript">
+            				
+            					<option value="/docs/nodejs/working-with-javascript">Working with JavaScript</option>
+            				
+            					<option value="/docs/nodejs/nodejs-tutorial">Node.js Tutorial</option>
+            				
+            					<option value="/docs/nodejs/nodejs-debugging">Node.js Debugging</option>
+            				
+            					<option value="/docs/nodejs/nodejs-deployment">Deploy Node.js Apps</option>
+            				
+            					<option value="/docs/nodejs/browser-debugging">Browser Debugging</option>
+            				
+            					<option value="/docs/nodejs/angular-tutorial">Angular Tutorial</option>
+            				
+            					<option value="/docs/nodejs/reactjs-tutorial">React Tutorial</option>
+            				
+            					<option value="/docs/nodejs/vuejs-tutorial">Vue Tutorial</option>
+            				
+            					<option value="/docs/nodejs/debugging-recipes">Debugging Recipes</option>
+            				
+            					<option value="/docs/nodejs/profiling">Performance Profiling</option>
+            				
+            					<option value="/docs/nodejs/extensions">Extensions</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="TypeScript">
+            				
+            					<option value="/docs/typescript/typescript-tutorial">Tutorial</option>
+            				
+            					<option value="/docs/typescript/typescript-compiling">Compiling</option>
+            				
+            					<option value="/docs/typescript/typescript-editing">Editing</option>
+            				
+            					<option value="/docs/typescript/typescript-refactoring">Refactoring</option>
+            				
+            					<option value="/docs/typescript/typescript-debugging">Debugging</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Python">
+            				
+            					<option value="/docs/python/python-quick-start">Quick Start</option>
+            				
+            					<option value="/docs/python/python-tutorial">Tutorial</option>
+            				
+            					<option value="/docs/python/run">Run Python Code</option>
+            				
+            					<option value="/docs/python/editing">Editing Code</option>
+            				
+            					<option value="/docs/python/linting">Linting</option>
+            				
+            					<option value="/docs/python/formatting">Formatting</option>
+            				
+            					<option value="/docs/python/debugging">Debugging</option>
+            				
+            					<option value="/docs/python/environments">Environments</option>
+            				
+            					<option value="/docs/python/testing">Testing</option>
+            				
+            					<option value="/docs/python/jupyter-support-py">Python Interactive</option>
+            				
+            					<option value="/docs/python/tutorial-django">Django Tutorial</option>
+            				
+            					<option value="/docs/python/tutorial-fastapi">FastAPI Tutorial</option>
+            				
+            					<option value="/docs/python/tutorial-flask">Flask Tutorial</option>
+            				
+            					<option value="/docs/python/tutorial-create-containers">Create containers</option>
+            				
+            					<option value="/docs/python/python-on-azure">Deploy Python Apps</option>
+            				
+            					<option value="/docs/python/python-web">Python in the Web</option>
+            				
+            					<option value="/docs/python/settings-reference">Settings Reference</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Java">
+            				
+            					<option value="/docs/java/java-tutorial">Getting Started</option>
+            				
+            					<option value="/docs/java/java-editing">Navigate and Edit</option>
+            				
+            					<option value="/docs/java/java-refactoring">Refactoring</option>
+            				
+            					<option value="/docs/java/java-linting">Formatting and Linting</option>
+            				
+            					<option value="/docs/java/java-project">Project Management</option>
+            				
+            					<option value="/docs/java/java-build">Build Tools</option>
+            				
+            					<option value="/docs/java/java-debugging">Run and Debug</option>
+            				
+            					<option value="/docs/java/java-testing">Testing</option>
+            				
+            					<option value="/docs/java/java-spring-boot">Spring Boot</option>
+            				
+            					<option value="/docs/java/java-tomcat-jetty">Application Servers</option>
+            				
+            					<option value="/docs/java/java-on-azure">Deploy Java Apps</option>
+            				
+            					<option value="/docs/java/java-gui">GUI Applications</option>
+            				
+            					<option value="/docs/java/extensions">Extensions</option>
+            				
+            					<option value="/docs/java/java-faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="C++">
+            				
+            					<option value="/docs/cpp/introvideos-cpp">Intro Videos</option>
+            				
+            					<option value="/docs/cpp/config-linux">GCC on Linux</option>
+            				
+            					<option value="/docs/cpp/config-mingw">GCC on Windows</option>
+            				
+            					<option value="/docs/cpp/config-wsl">GCC on Windows Subsystem for Linux</option>
+            				
+            					<option value="/docs/cpp/config-clang-mac" selected="">Clang on macOS</option>
+            				
+            					<option value="/docs/cpp/config-msvc">Microsoft C++ on Windows</option>
+            				
+            					<option value="/docs/cpp/build-with-cmake">Build with CMake</option>
+            				
+            					<option value="/docs/cpp/cmake-linux">CMake Tools on Linux</option>
+            				
+            					<option value="/docs/cpp/cmake-quickstart">CMake Quick Start</option>
+            				
+            					<option value="/docs/cpp/cpp-ide">Editing and Navigating</option>
+            				
+            					<option value="/docs/cpp/cpp-debug">Debugging</option>
+            				
+            					<option value="/docs/cpp/cpp-refactoring">Refactoring</option>
+            				
+            					<option value="/docs/cpp/launch-json-reference">Configure debugging</option>
+            				
+            					<option value="/docs/cpp/customize-default-settings-cpp">Settings</option>
+            				
+            					<option value="/docs/cpp/configure-intellisense">Configure IntelliSense</option>
+            				
+            					<option value="/docs/cpp/configure-intellisense-crosscompilation">Configure IntelliSense for cross-compiling</option>
+            				
+            					<option value="/docs/cpp/faq-cpp">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="C#">
+            				
+            					<option value="/docs/csharp/introvideos-csharp">Intro Videos</option>
+            				
+            					<option value="/docs/csharp/get-started">Get Started</option>
+            				
+            					<option value="/docs/csharp/navigate-edit">Navigate and Edit</option>
+            				
+            					<option value="/docs/csharp/intellicode">IntelliCode</option>
+            				
+            					<option value="/docs/csharp/refactoring">Refactoring</option>
+            				
+            					<option value="/docs/csharp/formatting-linting">Formatting and Linting</option>
+            				
+            					<option value="/docs/csharp/project-management">Project Management</option>
+            				
+            					<option value="/docs/csharp/build-tools">Build Tools</option>
+            				
+            					<option value="/docs/csharp/package-management">Package Management</option>
+            				
+            					<option value="/docs/csharp/debugging">Run and Debug</option>
+            				
+            					<option value="/docs/csharp/testing">Testing</option>
+            				
+            					<option value="/docs/csharp/cs-dev-kit-faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Docker">
+            				
+            					<option value="/docs/containers/overview">Overview</option>
+            				
+            					<option value="/docs/containers/quickstart-node">Node.js</option>
+            				
+            					<option value="/docs/containers/quickstart-python">Python</option>
+            				
+            					<option value="/docs/containers/quickstart-aspnet-core">ASP.NET Core</option>
+            				
+            					<option value="/docs/containers/debug-common">Debug</option>
+            				
+            					<option value="/docs/containers/docker-compose">Docker Compose</option>
+            				
+            					<option value="/docs/containers/quickstart-container-registries">Registries</option>
+            				
+            					<option value="/docs/containers/app-service">Deploy to Azure</option>
+            				
+            					<option value="/docs/containers/choosing-dev-environment">Choose a dev environment</option>
+            				
+            					<option value="/docs/containers/reference">Customize</option>
+            				
+            					<option value="/docs/containers/bridge-to-kubernetes">Develop with Kubernetes</option>
+            				
+            					<option value="/docs/containers/troubleshooting">Tips and Tricks</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Data Science">
+            				
+            					<option value="/docs/datascience/overview">Overview</option>
+            				
+            					<option value="/docs/datascience/jupyter-notebooks">Jupyter Notebooks</option>
+            				
+            					<option value="/docs/datascience/data-science-tutorial">Data Science Tutorial</option>
+            				
+            					<option value="/docs/datascience/python-interactive">Python Interactive</option>
+            				
+            					<option value="/docs/datascience/data-wrangler-quick-start">Data Wrangler Quick Start</option>
+            				
+            					<option value="/docs/datascience/data-wrangler">Data Wrangler</option>
+            				
+            					<option value="/docs/datascience/pytorch-support">PyTorch Support</option>
+            				
+            					<option value="/docs/datascience/azure-machine-learning">Azure Machine Learning</option>
+            				
+            					<option value="/docs/datascience/jupyter-kernel-management">Manage Jupyter Kernels</option>
+            				
+            					<option value="/docs/datascience/notebooks-web">Jupyter Notebooks on the web</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Azure">
+            				
+            					<option value="/docs/azure/overview">Overview</option>
+            				
+            					<option value="/docs/azure/gettingstarted">Getting Started</option>
+            				
+            					<option value="/docs/azure/deployment">Deployment</option>
+            				
+            					<option value="/docs/azure/docker">Docker</option>
+            				
+            					<option value="/docs/azure/aksextensions">Azure Kubernetes Service</option>
+            				
+            					<option value="/docs/azure/kubernetes">Kubernetes</option>
+            				
+            					<option value="/docs/azure/mongodb">MongoDB</option>
+            				
+            					<option value="/docs/azure/remote-debugging">Remote Debugging for Node.js</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Remote">
+            				
+            					<option value="/docs/remote/remote-overview">Overview</option>
+            				
+            					<option value="/docs/remote/ssh">SSH</option>
+            				
+            					<option value="/docs/remote/dev-containers">Dev Containers</option>
+            				
+            					<option value="/docs/remote/wsl">Windows Subsystem for Linux</option>
+            				
+            					<option value="/docs/remote/codespaces">GitHub Codespaces</option>
+            				
+            					<option value="/docs/remote/vscode-server">VS Code Server</option>
+            				
+            					<option value="/docs/remote/tunnels">Tunnels</option>
+            				
+            					<option value="/docs/remote/ssh-tutorial">SSH Tutorial</option>
+            				
+            					<option value="/docs/remote/wsl-tutorial">WSL Tutorial</option>
+            				
+            					<option value="/docs/remote/troubleshooting">Tips and Tricks</option>
+            				
+            					<option value="/docs/remote/faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            				<optgroup label="Dev Containers">
+            				
+            					<option value="/docs/devcontainers/containers">Overview</option>
+            				
+            					<option value="/docs/devcontainers/tutorial">Tutorial</option>
+            				
+            					<option value="/docs/devcontainers/attach-container">Attach to Container</option>
+            				
+            					<option value="/docs/devcontainers/create-dev-container">Create a Dev Container</option>
+            				
+            					<option value="/docs/devcontainers/containers-advanced">Advanced Containers</option>
+            				
+            					<option value="/docs/devcontainers/devcontainerjson-reference">devcontainer.json</option>
+            				
+            					<option value="/docs/devcontainers/devcontainer-cli">Dev Container CLI</option>
+            				
+            					<option value="/docs/devcontainers/tips-and-tricks">Tips and Tricks</option>
+            				
+            					<option value="/docs/devcontainers/faq">FAQ</option>
+            				
+            				</optgroup>
+            			
+            		
+            			
+            		
+            	</select>
+            </nav>        </div>
+
+        <!-- small right nav -->
+        
+        <div class="col-xs-12 visible-xs">
+            <nav aria-labelledby="small-right-nav-label" class="small-nav docs-nav updates-nav">
+                <label class="faux-h4" for="small-right-nav-dropdown" id="small-right-nav-label">In this article</label>
+                <select id="small-right-nav-dropdown" class="small-nav-select" aria-label="Sections">
+                    
+                    <option value="#_prerequisites" selected="">Prerequisites</option>
+                    
+                    <option value="#_create-hello-world-app">Create Hello World app</option>
+                    
+                    <option value="#_explore-intellisense">Explore IntelliSense</option>
+                    
+                    <option value="#_run-helloworldcpp">Run helloworld.cpp</option>
+                    
+                    <option value="#_debug-helloworldcpp">Debug helloworld.cpp</option>
+                    
+                    <option value="#_explore-the-debugger">Explore the debugger</option>
+                    
+                    <option value="#_step-through-the-code">Step through the code</option>
+                    
+                    <option value="#_set-a-watch">Set a watch</option>
+                    
+                    <option value="#_customize-debugging-with-launchjson">Customize debugging with launch.json</option>
+                    
+                    <option value="#_adding-additional-cc-settings">Adding additional C/C++ settings</option>
+                    
+                    <option value="#_troubleshooting">Troubleshooting</option>
+                    
+                    <option value="#_next-steps">Next steps</option>
+                    
+                </select>
+            </nav>
+        </div>
+        
+
+        <!-- main content -->
+        <main class="col-xs-12 col-sm-9 col-md-8 body">
+            <div class="edit-github pull-right">
+                <a href="https://vscode.dev/github/microsoft/vscode-docs/blob/main/docs/cpp/config-clang-mac.md" class="btn btn-default" title="Edit this document in vscode.dev">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span class="hidden-xs">Edit</span>
+                </a>
+            </div>
+            <h1>Using Clang in Visual Studio Code</h1>
+<p>In this tutorial, you configure Visual Studio Code on macOS to use the Clang/LLVM compiler and debugger.</p>
+<p>After configuring VS Code, you will compile and debug a C++ program in VS Code. This tutorial does not teach you about Clang or the C++ language. For those subjects, there are many good resources available on the Web.</p>
+<p>If you have any trouble, feel free to file an issue for this tutorial in the <a href="https://github.com/microsoft/vscode-docs/issues" class="external-link" target="_blank">VS Code documentation repository</a>.</p>
+<h2 id="_prerequisites" data-needslink="_prerequisites"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_prerequisites">Prerequisites</a></h2>
+<p>To successfully complete this tutorial, you must do the following steps:</p>
+<ol>
+<li>
+<p>Install <a href="https://code.visualstudio.com/docs/setup/mac">Visual Studio Code on macOS</a>.</p>
+</li>
+<li>
+<p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" class="external-link" target="_blank">C++ extension for VS Code</a>. You can install the C/C++ extension by searching for 'C++' in the Extensions view (<span class="dynamic-keybinding keybinding osx" data-commandid="workbench.view.extensions" data-osx="⇧⌘X" data-win="Ctrl+Shift+X" data-linux="Ctrl+Shift+X" title="Windows: Ctrl+Shift+X, Linux: Ctrl+Shift+X">⇧⌘X</span>).</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/cpp-extension.png" alt="C/C++ extension" loading="lazy"></p>
+</li>
+</ol>
+<h3 id="_ensure-clang-is-installed" data-needslink="_ensure-clang-is-installed"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_ensure-clang-is-installed">Ensure Clang is installed</a></h3>
+<p>Clang might already be installed on your Mac. To verify that it is, open a macOS Terminal window and enter the following command:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">clang --version</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>If Clang isn't installed, enter the following command to install the command line developer tools, which include Clang:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">xcode-select --install</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<h2 id="_create-hello-world-app" data-needslink="_create-hello-world-app"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_create-hello-world-app">Create Hello World app</a></h2>
+<p>From the macOS Terminal, create an empty folder called <code>projects</code> where you can store all your VS Code projects, then create a subfolder called <code>helloworld</code>, navigate into it, and open VS Code in that folder by entering the following commands in the terminal window:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">mkdir projects</span></span>
+<span class="line"><span style="color: #DCDCAA">cd</span><span style="color: #BBBBBB"> projects</span></span>
+<span class="line"><span style="color: #BBBBBB">mkdir helloworld</span></span>
+<span class="line"><span style="color: #DCDCAA">cd</span><span style="color: #BBBBBB"> helloworld</span></span>
+<span class="line"><span style="color: #BBBBBB">code </span><span style="color: #DCDCAA">.</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>The <code>code .</code> command opens VS Code in the current working folder, which becomes your "workspace". As you go through the tutorial, three files are created in the <code>.vscode</code> folder in your workspace:</p>
+<ul>
+<li><code>tasks.json</code> (compiler build settings)</li>
+<li><code>launch.json</code> (debugger settings)</li>
+<li><code>c_cpp_properties.json</code> (compiler path and IntelliSense settings)</li>
+</ul>
+<h3 id="_add-a-hello-world-source-code-file" data-needslink="_add-a-hello-world-source-code-file"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_add-a-hello-world-source-code-file">Add a hello world source code file</a></h3>
+<p>In the File Explorer title bar, select the <strong>New File</strong> button and name the file <code>helloworld.cpp</code>.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/new-file-button.png" alt="New File title bar button" loading="lazy"></p>
+<p>Paste in the following source code:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #C586C0">#include</span><span style="color: #569CD6"> </span><span style="color: #CE9178">&lt;iostream&gt;</span></span>
+<span class="line"><span style="color: #C586C0">#include</span><span style="color: #569CD6"> </span><span style="color: #CE9178">&lt;vector&gt;</span></span>
+<span class="line"><span style="color: #C586C0">#include</span><span style="color: #569CD6"> </span><span style="color: #CE9178">&lt;string&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C586C0">using</span><span style="color: #BBBBBB"> </span><span style="color: #569CD6">namespace</span><span style="color: #BBBBBB"> </span><span style="color: #4EC9B0">std</span><span style="color: #BBBBBB">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">int</span><span style="color: #BBBBBB"> </span><span style="color: #DCDCAA">main</span><span style="color: #BBBBBB">()</span></span>
+<span class="line"><span style="color: #BBBBBB">{</span></span>
+<span class="line"><span style="color: #BBBBBB">    vector</span><span style="color: #D4D4D4">&lt;</span><span style="color: #BBBBBB">string</span><span style="color: #D4D4D4">&gt;</span><span style="color: #BBBBBB"> msg {</span><span style="color: #CE9178">"Hello"</span><span style="color: #BBBBBB">, </span><span style="color: #CE9178">"C++"</span><span style="color: #BBBBBB">, </span><span style="color: #CE9178">"World"</span><span style="color: #BBBBBB">, </span><span style="color: #CE9178">"from"</span><span style="color: #BBBBBB">, </span><span style="color: #CE9178">"VS Code"</span><span style="color: #BBBBBB">, </span><span style="color: #CE9178">"and the C++ extension!"</span><span style="color: #BBBBBB">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #BBBBBB">    </span><span style="color: #C586C0">for</span><span style="color: #BBBBBB"> (</span><span style="color: #569CD6">const</span><span style="color: #BBBBBB"> string</span><span style="color: #D4D4D4">&amp;</span><span style="color: #BBBBBB"> word : msg)</span></span>
+<span class="line"><span style="color: #BBBBBB">    {</span></span>
+<span class="line"><span style="color: #BBBBBB">        cout </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #BBBBBB"> word </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #BBBBBB"> </span><span style="color: #CE9178">" "</span><span style="color: #BBBBBB">;</span></span>
+<span class="line"><span style="color: #BBBBBB">    }</span></span>
+<span class="line"><span style="color: #BBBBBB">    cout </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #BBBBBB"> endl;</span></span>
+<span class="line"><span style="color: #BBBBBB">}</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>Now press <span class="dynamic-keybinding keybinding osx" data-commandid="workbench.action.files.save" data-osx="⌘S" data-win="Ctrl+S" data-linux="Ctrl+S" title="Windows: Ctrl+S, Linux: Ctrl+S">⌘S</span> to save the file. Notice that your files are listed in the <strong>File Explorer</strong> view (<span class="dynamic-keybinding keybinding osx" data-commandid="workbench.view.explorer" data-osx="⇧⌘E" data-win="Ctrl+Shift+E" data-linux="Ctrl+Shift+E" title="Windows: Ctrl+Shift+E, Linux: Ctrl+Shift+E">⇧⌘E</span>) in the side bar of VS Code:</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/file-explorer.png" alt="File Explorer" loading="lazy"></p>
+<p>You can also enable <a href="https://code.visualstudio.com/docs/editor/codebasics#_save-auto-save">Auto Save</a> to automatically save your file changes, by selecting <strong>File</strong> &gt; <strong>Auto Save</strong>. You can find out more about the other views in the VS Code <a href="https://code.visualstudio.com/docs/getstarted/userinterface">User Interface documentation</a>.</p>
+<blockquote><p><strong>Note</strong>: When you save or open a C++ file, you may see a notification from the C/C++ extension about the availability of an Insiders version, which lets you test new features and fixes. You can ignore this notification by selecting the <code>X</code> (<strong>Clear Notification</strong>).</p>
+</blockquote><h2 id="_explore-intellisense" data-needslink="_explore-intellisense"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_explore-intellisense">Explore IntelliSense</a></h2>
+<p><a href="https://code.visualstudio.com/docs/editor/intellisense">IntelliSense</a> is a tool to help you code faster and more efficiently by adding code editing features such as code completion, parameter info, quick info, and member lists.</p>
+<p>To see IntelliSense in action, hover over <code>vector</code> or <code>string</code> to see their type information. If you type  <code>msg.</code> in line 10, you can see a completion list of recommended member functions to call, all generated by IntelliSense:</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/msg-intellisense.png" alt="Statement completion IntelliSense" loading="lazy"></p>
+<p>You can press the <span class="keybinding">Tab</span> key to insert the selected member. Then, when you add the opening parenthesis, information about arguments that the function requires is displayed.</p>
+<p>If IntelliSense is not already configured, open the Command Palette (<span class="dynamic-keybinding keybinding osx" data-commandid="workbench.action.showCommands" data-osx="⇧⌘P" data-win="Ctrl+Shift+P" data-linux="Ctrl+Shift+P" title="Windows: Ctrl+Shift+P, Linux: Ctrl+Shift+P">⇧⌘P</span>) and enter <strong>Select IntelliSense Configuration</strong>. From the dropdown of compilers, select <code>Use clang++</code> to configure. More information can be found in the <a href="https://code.visualstudio.com/docs/cpp/configure-intellisense">IntelliSense configuration documentation</a>.</p>
+<h2 id="_run-helloworldcpp" data-needslink="_run-helloworldcpp"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_run-helloworldcpp">Run helloworld.cpp</a></h2>
+<p>Remember, the C++ extension uses the C++ compiler you installed on your machine to build your program. Make sure you have a C++ compiler, such as Clang, installed before attempting to run and debug <code>helloworld.cpp</code> in VS Code.</p>
+<ol>
+<li>
+<p>Open <code>helloworld.cpp</code> so that it is the active file.</p>
+</li>
+<li>
+<p>Press the play button in the top right corner of the editor.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/run-play-button.png" alt="Screenshot of helloworld.cpp and play button" loading="lazy"></p>
+</li>
+<li>
+<p>Choose <strong>C/C++: clang++ build and debug active file</strong> from the list of detected compilers on your system.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/build-and-debug-active-file.png" alt="Build and debug task" loading="lazy"></p>
+</li>
+</ol>
+<p>You are only asked to choose a compiler the first time you run <code>helloworld.cpp</code>. This compiler is the "default" compiler set in <code>tasks.json</code> file.</p>
+<ol start="4">
+<li>
+<p>After the build succeeds, your program's output will appear in the integrated <strong>Debug Console</strong>.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/helloworld-debug-console-output.png" alt="screenshot of program output" loading="lazy"></p>
+</li>
+</ol>
+<p>Congratulations! You've just run your first C++ program in VS Code!</p>
+<h3 id="_understanding-tasksjson" data-needslink="_understanding-tasksjson"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_understanding-tasksjson">Understanding tasks.json</a></h3>
+<p>The first time you run your program, the C++ extension creates <code>tasks.json</code>, located in your project's <code>.vscode</code> folder. <code>tasks.json</code> stores build configurations.</p>
+<p>Here is a sample of a <code>tasks.json</code> file on macOS:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">{</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"tasks"</span><span style="color: #BBBBBB">: [</span></span>
+<span class="line"><span style="color: #BBBBBB">    {</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"type"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"cppbuild"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"label"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"C/C++: clang++ build active file"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"command"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"/usr/bin/clang++"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"args"</span><span style="color: #BBBBBB">: [</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"-fcolor-diagnostics"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"-fansi-escape-codes"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"-g"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"${file}"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"-o"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"${fileDirname}/${fileBasenameNoExtension}"</span></span>
+<span class="line"><span style="color: #BBBBBB">      ],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"options"</span><span style="color: #BBBBBB">: {</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #9CDCFE">"cwd"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"${fileDirname}"</span></span>
+<span class="line"><span style="color: #BBBBBB">      },</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"problemMatcher"</span><span style="color: #BBBBBB">: [</span><span style="color: #CE9178">"$gcc"</span><span style="color: #BBBBBB">],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"group"</span><span style="color: #BBBBBB">: {</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #9CDCFE">"kind"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"build"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #9CDCFE">"isDefault"</span><span style="color: #BBBBBB">: </span><span style="color: #569CD6">true</span></span>
+<span class="line"><span style="color: #BBBBBB">      },</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"detail"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"Task generated by Debugger."</span></span>
+<span class="line"><span style="color: #BBBBBB">    }</span></span>
+<span class="line"><span style="color: #BBBBBB">  ],</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"version"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"2.0.0"</span></span>
+<span class="line"><span style="color: #BBBBBB">}</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<blockquote><p><strong>Note</strong>: You can learn more about <code>tasks.json</code> variables in the <a href="https://code.visualstudio.com/docs/editor/variables-reference">variables reference</a>.</p>
+</blockquote><p>The <code>command</code> setting specifies the program to run. In this case, that is<code>clang++</code>.</p>
+<p>The <code>args</code> array specifies the command-line arguments that are passed to clang++. These arguments must be specified in the order expected by the compiler.</p>
+<p>This task tells the C++ compiler to take the active file (<code>${file}</code>), compile it, and create an output file (<code>-o</code> switch) in the current directory (<code>${fileDirname}</code>) with the same name as the active file but without the file extension (<code>${fileBasenameNoExtension}</code>). This process creates <code>helloworld</code>.</p>
+<p>The <code>label</code> value is what you see in the tasks list, which is based on your personal preference.</p>
+<p>The <code>detail</code> value is the description of the task in the tasks list. Update this string to differentiate it from similar tasks.</p>
+<p>The <code>problemMatcher</code> value selects the output parser to use for finding errors and warnings in the compiler output. For clang++, the <code>$gcc</code> problem matcher creates the best results.</p>
+<p>From now on, the play button always reads from <code>tasks.json</code> to figure out how to build and run your program. You can define multiple build tasks in <code>tasks.json</code>, and whichever task is marked as the default is the one used by the play button. In case you need to change the default compiler, you can run <strong>Tasks: Configure Default Build Task</strong> in the Command Palette. Alternatively you can modify the <code>tasks.json</code> file and remove the default by replacing this segment:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">    </span><span style="color: #CE9178">"group"</span><span style="color: #BBBBBB">: {</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #9CDCFE">"kind"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"build"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #9CDCFE">"isDefault"</span><span style="color: #BBBBBB">: </span><span style="color: #569CD6">true</span></span>
+<span class="line"><span style="color: #BBBBBB">    },</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>with this:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">    </span><span style="color: #CE9178">"group"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"build"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<h3 id="_modifying-tasksjson" data-needslink="_modifying-tasksjson"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_modifying-tasksjson">Modifying tasks.json</a></h3>
+<p>You can modify your <code>tasks.json</code> to build multiple C++ files by using an argument like <code>"${workspaceFolder}/*.cpp"</code> instead of <code>"${file}"</code>. This builds all <code>.cpp</code> files in your current folder. You can also modify the output filename by replacing <code>"${fileDirname}/${fileBasenameNoExtension}"</code> with a hard-coded filename (for example <code>"${workspaceFolder}/myProgram.out"</code>).</p>
+<h2 id="_debug-helloworldcpp" data-needslink="_debug-helloworldcpp"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_debug-helloworldcpp">Debug helloworld.cpp</a></h2>
+<p>To debug your code,</p>
+<ol>
+<li>
+<p>Go back to <code>helloworld.cpp</code> so that it is the active file.</p>
+</li>
+<li>
+<p>Set a breakpoint by clicking on the editor margin or using F9 on the current line.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/cpp-breakpoint.png" alt="screenshot of breakpoint in helloworld.cpp" loading="lazy"></p>
+</li>
+<li>
+<p>From the drop-down next to the play button, select <strong>Debug C/C++ File</strong>.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/debug-cpp-file-play-button.png" alt="Screenshot of play button drop-down" loading="lazy"></p>
+</li>
+<li>
+<p>Choose <strong>C/C++: clang++ build and debug active file</strong> from the list of detected compilers on your system (you'll only be asked to choose a compiler the first time you run or debug <code>helloworld.cpp</code>).</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/build-and-debug-active-file.png" alt="Build and debug task" loading="lazy"></p>
+</li>
+<li>
+<p>You will see the task execute and print out the output to the <strong>Terminal</strong> window.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/helloworld-terminal-output.png" alt="Hello World Terminal Output" loading="lazy"></p>
+</li>
+</ol>
+<p>The play button has two modes: <strong>Run C/C++ File</strong> and <strong>Debug C/C++ File</strong>. The default is the last-used mode. If you see the debug icon in the play button, you can select the play button to debug, instead of selecting the drop-down menu item.</p>
+<h2 id="_explore-the-debugger" data-needslink="_explore-the-debugger"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_explore-the-debugger">Explore the debugger</a></h2>
+<p>Before you start stepping through the code, let's take a moment to notice several changes in the user interface:</p>
+<ul>
+<li>
+<p>The Integrated Terminal appears at the bottom of the source code editor. In the <strong>Debug Console</strong> tab, you see output that indicates the debugger is up and running.</p>
+</li>
+<li>
+<p>The editor highlights the line where you set a breakpoint before starting the debugger:</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/breakpoint-debug.png" alt="Initial breakpoint" loading="lazy"></p>
+</li>
+<li>
+<p>The <strong>Run and Debug</strong> view in the Activity Bar shows debugging information.</p>
+</li>
+<li>
+<p>At the top of the code editor, a debugging control panel appears. You can move this around the screen by grabbing the dots on the left side.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/debug-controls.png" alt="Debugging controls" loading="lazy"></p>
+</li>
+</ul>
+<h2 id="_step-through-the-code" data-needslink="_step-through-the-code"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_step-through-the-code">Step through the code</a></h2>
+<p>Now you're ready to start stepping through the code.</p>
+<ol>
+<li>
+<p>Select the <strong>Step over</strong> icon in the debugging control panel so that the <code>for (const string&amp; word : msg)</code> statement is highlighted.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/step-over-button.png" alt="Step over button" loading="lazy"></p>
+<p>The <strong>Step Over</strong> command skips over all the internal function calls within the <code>vector</code> and <code>string</code> classes that are invoked when the <code>msg</code> variable is created and initialized. Notice the change in the <strong>Variables</strong> window. The contents of <code>msg</code> are visible because that statement has completed.</p>
+</li>
+<li>
+<p>Press <strong>Step over</strong> again to advance to the next statement (skipping over all the internal code that is executed to initialize the loop). Now, the <strong>Variables</strong> window shows information about the loop variable.</p>
+</li>
+<li>
+<p>Press <strong>Step over</strong> again to execute the <code>cout</code> statement.</p>
+</li>
+<li>
+<p>If you like, you can keep pressing <strong>Step over</strong> until all the words in the vector have been printed to the console. But if you are curious, try pressing the <strong>Step Into</strong> button to step through source code in the C++ standard library!</p>
+</li>
+</ol>
+<h2 id="_set-a-watch" data-needslink="_set-a-watch"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_set-a-watch">Set a watch</a></h2>
+<p>You might want to keep track of the value of a variable as your program executes. You can do this by setting a <strong>watch</strong> on the variable.</p>
+<ol>
+<li>
+<p>In the <strong>Watch</strong> window, select the plus sign and type <code>word</code> in the text box. This is the name of the loop variable. Now view the <strong>Watch</strong> window as you step through the loop.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/watch-window.png" alt="Watch window" loading="lazy"></p>
+<p><strong>Note</strong>: the value of the watch variable is only available when the program execution is within the scope of the variable. For example, for a loop variable, the value is only available when the program is executing the loop.</p>
+</li>
+<li>
+<p>Add another watch by adding this statement before the loop: <code>int i = 0;</code>. Then, inside the loop, add this statement: <code>++i;</code>. Now add a watch for <code>i</code> as you did in the previous step.</p>
+</li>
+<li>
+<p>You can hover over any variable with the mouse pointer while execution is paused to quickly view its value.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/mouse-hover.png" alt="Mouse hover" loading="lazy"></p>
+</li>
+</ol>
+<h2 id="_customize-debugging-with-launchjson" data-needslink="_customize-debugging-with-launchjson"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_customize-debugging-with-launchjson">Customize debugging with launch.json</a></h2>
+<p>When you debug with the play button or <span class="dynamic-keybinding keybinding osx" data-commandid="workbench.action.debug.start" data-osx="F5" data-win="F5" data-linux="F5" title="Windows: F5, Linux: F5">F5</span>, the C++ extension creates a dynamic debug configuration on the fly.</p>
+<p>There are cases where you'd want to customize your debug configuration, such as specifying arguments to pass to the program at runtime. You can define custom debug configurations in a <code>launch.json</code> file.</p>
+<p>To create <code>launch.json</code>, choose <strong>Add Debug Configuration</strong> from the play button drop-down menu.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/add-debug-configuration.png" alt="Add debug configuration play button menu" loading="lazy"></p>
+<p>You'll then see a dropdown for various predefined debugging configurations. Choose <strong>C/C++: clang++ build and debug active file</strong>.
+<img src="./Configure VS Code for Clang_LLVM on macOS_files/build-and-debug-active-file.png" alt="C++ debug configuration dropdown" loading="lazy"></p>
+<p>VS Code creates a <code>launch.json</code> file, which looks something like this:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">{</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"configurations"</span><span style="color: #BBBBBB">: [</span></span>
+<span class="line"><span style="color: #BBBBBB">    {</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"name"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"C/C++: clang++ build and debug active file"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"type"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"cppdbg"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"request"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"launch"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"program"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"${fileDirname}/${fileBasenameNoExtension}"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"args"</span><span style="color: #BBBBBB">: [],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"stopAtEntry"</span><span style="color: #BBBBBB">: </span><span style="color: #569CD6">false</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"cwd"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"${fileDirname}"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"environment"</span><span style="color: #BBBBBB">: [],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"externalConsole"</span><span style="color: #BBBBBB">: </span><span style="color: #569CD6">false</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"MIMode"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"lldb"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"preLaunchTask"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"C/C++: clang++ build active file"</span></span>
+<span class="line"><span style="color: #BBBBBB">    }</span></span>
+<span class="line"><span style="color: #BBBBBB">  ],</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"version"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"2.0.0"</span></span>
+<span class="line"><span style="color: #BBBBBB">}</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>The <code>program</code> setting specifies the program you want to debug. Here it is set to the active file folder <code>${fileDirname}</code> and active filename <code>${fileBasenameNoExtension}</code>, which if <code>helloworld.cpp</code> is the active file will be <code>helloworld</code>. The <code>args</code> property is an array of arguments to pass to the program at runtime.</p>
+<p>By default, the C++ extension does not add any breakpoints to your source code and the <code>stopAtEntry</code> value is set to <code>false</code>.</p>
+<p>Change the <code>stopAtEntry</code> value to <code>true</code> to cause the debugger to stop on the <code>main</code> method when you start debugging.</p>
+<p>Ensure that the <code>preLaunchTask</code> value matches the <code>label</code> of the build task in the <code>tasks.json</code> file.</p>
+<blockquote><p>From now on, the play button and <span class="dynamic-keybinding keybinding osx" data-commandid="workbench.action.debug.start" data-osx="F5" data-win="F5" data-linux="F5" title="Windows: F5, Linux: F5">F5</span> will read from your <code>launch.json</code> file when launching your program for debugging.</p>
+</blockquote><h2 id="_adding-additional-cc-settings" data-needslink="_adding-additional-cc-settings"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_adding-additional-cc-settings">Adding additional C/C++ settings</a></h2>
+<p>For more control over the C/C++ extension, create a <code>c_cpp_properties.json</code> file, which allows you to change settings such as the path to the compiler, include paths, which C++ standard to compile against (such as C++17), and more.</p>
+<p>View the C/C++ configuration UI by running the command <strong>C/C++: Edit Configurations (UI)</strong> from the Command Palette (<span class="dynamic-keybinding keybinding osx" data-commandid="workbench.action.showCommands" data-osx="⇧⌘P" data-win="Ctrl+Shift+P" data-linux="Ctrl+Shift+P" title="Windows: Ctrl+Shift+P, Linux: Ctrl+Shift+P">⇧⌘P</span>).</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/mac-command-palette-configurations.png" alt="Command Palette" loading="lazy"></p>
+<p>This opens the <strong>C/C++ Configurations</strong> page.</p>
+<p><img src="./Configure VS Code for Clang_LLVM on macOS_files/intellisense-configurations-mac-clang.png" alt="C++ configuration" loading="lazy"></p>
+<p>Visual Studio Code places these settings in <code>.vscode/c_cpp_properties.json</code>. If you open that file directly, it should look something like this:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">{</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"configurations"</span><span style="color: #BBBBBB">: [</span></span>
+<span class="line"><span style="color: #BBBBBB">    {</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"name"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"Mac"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"includePath"</span><span style="color: #BBBBBB">: [</span><span style="color: #CE9178">"${workspaceFolder}/**"</span><span style="color: #BBBBBB">],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"defines"</span><span style="color: #BBBBBB">: [],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"macFrameworkPath"</span><span style="color: #BBBBBB">: [</span></span>
+<span class="line"><span style="color: #BBBBBB">        </span><span style="color: #CE9178">"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"</span></span>
+<span class="line"><span style="color: #BBBBBB">      ],</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"compilerPath"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"/usr/bin/clang"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"cStandard"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"c11"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"cppStandard"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"c++17"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">      </span><span style="color: #9CDCFE">"intelliSenseMode"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"macos-clang-arm64"</span></span>
+<span class="line"><span style="color: #BBBBBB">    }</span></span>
+<span class="line"><span style="color: #BBBBBB">  ],</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"version"</span><span style="color: #BBBBBB">: </span><span style="color: #B5CEA8">4</span></span>
+<span class="line"><span style="color: #BBBBBB">}</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>You only need to modify the <strong>Include path</strong> setting if your program includes header files that are not in your workspace or the standard library path.</p>
+<h3 id="_compiler-path" data-needslink="_compiler-path"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_compiler-path">Compiler path</a></h3>
+<p>The extension uses the <code>compilerPath</code> setting to infer the path to the C++ standard library header files. When the extension knows where to find those files, it can provide features like smart completions and <strong>Go to Definition</strong> navigation.</p>
+<p>The C/C++ extension attempts to populate <code>compilerPath</code> with the default compiler location based on what it finds on your system. The <code>compilerPath</code> search order is:</p>
+<ul>
+<li>Your PATH for the names of known compilers. The order the compilers appear in the list depends on your PATH.</li>
+<li>Then hard-coded Xcode paths are searched, such as <code>/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/</code></li>
+</ul>
+<p>For more information, see the <a href="https://code.visualstudio.com/docs/cpp/configure-intellisense">IntelliSense configuration documentation</a>.</p>
+<h3 id="_mac-framework-path" data-needslink="_mac-framework-path"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_mac-framework-path">Mac framework path</a></h3>
+<p>On the C/C++ Configuration screen, scroll down and expand <strong>Advanced Settings</strong> and ensure that <strong>Mac framework path</strong> points to the system header files. For example: <code>/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks</code></p>
+<h2 id="_troubleshooting" data-needslink="_troubleshooting"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_troubleshooting">Troubleshooting</a></h2>
+<h3 id="_compiler-and-linking-errors" data-needslink="_compiler-and-linking-errors"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_compiler-and-linking-errors">Compiler and linking errors</a></h3>
+<p>The most common cause of errors (such as <code>undefined _main</code>, or <code>attempting to link with file built for unknown-unsupported file format</code>, and so on) occurs when <code>helloworld.cpp</code> is not the active file when you start a build or start debugging. This is because the compiler is trying to compile something that isn't source code, like your <code>launch.json</code>, <code>tasks.json</code>, or <code>c_cpp_properties.json</code> file.</p>
+<p>If you see build errors mentioning "C++11 extensions", you might not have updated your <code>tasks.json</code> build task to use the clang++ argument <code>--std=c++17</code>. By default, clang++ uses the C++98 standard, which doesn't support the initialization used in <code>helloworld.cpp</code>. Make sure to replace the entire contents of your <code>tasks.json</code> file with the code block provided in the <a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_run-helloworldcpp">Run helloworld.cpp</a> section.</p>
+<h3 id="_terminal-wont-launch-for-input" data-needslink="_terminal-wont-launch-for-input"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_terminal-wont-launch-for-input">Terminal won't launch for input</a></h3>
+<p>On macOS Catalina and onwards, you might have the issue where you are unable to enter input, even after setting <code>"externalConsole": true</code>. A terminal window opens, but it does not actually allow you to type any input.</p>
+<p>The issue is currently tracked <a href="https://github.com/microsoft/vscode-cpptools/issues/5079" class="external-link" target="_blank">#5079</a>.</p>
+<p>The workaround is to have VS Code launch the terminal once. You can do this by adding and running this task in your <code>tasks.json</code>:</p>
+<pre class="shiki" style="background-color: #1e1e1e"><code><span class="line"><span style="color: #BBBBBB">{</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"label"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"Open Terminal"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"type"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"shell"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"command"</span><span style="color: #BBBBBB">: </span><span style="color: #CE9178">"osascript -e 'tell application </span><span style="color: #D7BA7D">\"</span><span style="color: #CE9178">Terminal</span><span style="color: #D7BA7D">\"\n</span><span style="color: #CE9178">do script </span><span style="color: #D7BA7D">\"</span><span style="color: #CE9178">echo hello</span><span style="color: #D7BA7D">\"\n</span><span style="color: #CE9178">end tell'"</span><span style="color: #BBBBBB">,</span></span>
+<span class="line"><span style="color: #BBBBBB">  </span><span style="color: #9CDCFE">"problemMatcher"</span><span style="color: #BBBBBB">: []</span></span>
+<span class="line"><span style="color: #BBBBBB">}</span></span>
+<span class="line"></span></code><button>Copy</button></pre>
+<p>You can run this specific task using <strong>Terminal</strong> &gt; <strong>Run Task...</strong> and select <strong>Open Terminal</strong>.</p>
+<p>Once you accept the permission request, then the external console should appear when you debug.</p>
+<h2 id="_next-steps" data-needslink="_next-steps"><a class="hash-link" href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_next-steps">Next steps</a></h2>
+<ul>
+<li>Explore the <a href="https://code.visualstudio.com/docs/editor/codebasics">VS Code User Guide</a>.</li>
+<li>Review the <a href="https://code.visualstudio.com/docs/languages/cpp">Overview of the C++ extension</a></li>
+<li>Create a new workspace, copy your .json files to it, adjust the necessary settings for the new workspace path, program name, and so on, and start coding!</li>
+</ul>
+
+            <div class="feedback"><div class="widget"><form aria-label="Feedback"><div class="buttons"><h3 class="feedback-header">Was this documentation helpful?</h3><br><button value="1">Yes<span class="sr-only"> , this page was helpful</span></button><button value="0">No<span class="sr-only"> , this page was not helpful</span></button></div></form></div></div>
+            
+            <div class="body-footer">12/14/2023</div>
+            
+        </main>
+
+        <!-- medium right nav -->
+        <div class="col-sm-3 col-md-2 hidden-xs docs-subnavbar-container">
+            <nav id="docs-subnavbar" aria-label="On Page" data-spy="affix" data-offset-top="20" class="affix">
+                
+                <h4><span class="sr-only">In this article there are 12 sections</span><span aria-hidden="true">In this article</span></h4>
+                <ul class="nav">
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_prerequisites">Prerequisites</a></li>
+                    
+                    <li class="active"><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_create-hello-world-app">Create Hello World app</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_explore-intellisense">Explore IntelliSense</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_run-helloworldcpp">Run helloworld.cpp</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_debug-helloworldcpp">Debug helloworld.cpp</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_explore-the-debugger">Explore the debugger</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_step-through-the-code">Step through the code</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_set-a-watch">Set a watch</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_customize-debugging-with-launchjson">Customize debugging with launch.json</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_adding-additional-cc-settings">Adding additional C/C++ settings</a></li>
+                    
+                    <li class=""><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_troubleshooting">Troubleshooting</a></li>
+                    
+                    <li><a href="https://code.visualstudio.com/docs/cpp/config-clang-mac#_next-steps">Next steps</a></li>
+                    
+                </ul>
+                
+                <div class="connect-widget"><ul class="connect-links"><li><a href="https://code.visualstudio.com/feed.xml" target="_blank"><img alt="RSS" src="./Configure VS Code for Clang_LLVM on macOS_files/rss.svg">Subscribe</a></li><li><a href="https://stackoverflow.com/questions/tagged/vscode" target="_blank" rel="noopener noreferrer"><img alt="Stackoverflow" src="./Configure VS Code for Clang_LLVM on macOS_files/stackoverflow.svg">Ask questions</a></li><li><a href="https://go.microsoft.com/fwlink/?LinkID=533687" target="_blank" rel="noopener noreferrer"><img alt="Twitter" src="./Configure VS Code for Clang_LLVM on macOS_files/twitter.svg">Follow @code</a></li><li id="connect-uservoice"><a href="https://go.microsoft.com/fwlink/?LinkID=533482" target="_blank" rel="noopener noreferrer"><img alt="GitHub" src="./Configure VS Code for Clang_LLVM on macOS_files/github.svg">Request features</a></li><li id="connect-github"><a href="https://www.github.com/Microsoft/vscode/issues" target="_blank" rel="noopener noreferrer"><img alt="Issues" src="./Configure VS Code for Clang_LLVM on macOS_files/issue.svg">Report issues</a></li><li id="connect-youtube"><a href="https://www.youtube.com/channel/UCs5Y5_7XK8HLDX0SLNwkd3w" target="_blank" rel="noopener noreferrer"><img alt="YouTube" src="./Configure VS Code for Clang_LLVM on macOS_files/youtube.svg">Watch videos</a></li></ul></div>
+            </nav>
+        </div>
+        <!-- end of page connect widget -->
+        <div class="col-xs-12 visible-xs">
+            <div class="connect-widget"><ul class="connect-links"><li><a href="https://code.visualstudio.com/feed.xml" target="_blank"><img alt="RSS" src="./Configure VS Code for Clang_LLVM on macOS_files/rss.svg">Subscribe</a></li><li><a href="https://stackoverflow.com/questions/tagged/vscode" target="_blank" rel="noopener noreferrer"><img alt="Stackoverflow" src="./Configure VS Code for Clang_LLVM on macOS_files/stackoverflow.svg">Ask questions</a></li><li><a href="https://go.microsoft.com/fwlink/?LinkID=533687" target="_blank" rel="noopener noreferrer"><img alt="Twitter" src="./Configure VS Code for Clang_LLVM on macOS_files/twitter.svg">Follow @code</a></li><li id="connect-uservoice"><a href="https://go.microsoft.com/fwlink/?LinkID=533482" target="_blank" rel="noopener noreferrer"><img alt="GitHub" src="./Configure VS Code for Clang_LLVM on macOS_files/github.svg">Request features</a></li><li id="connect-github"><a href="https://www.github.com/Microsoft/vscode/issues" target="_blank" rel="noopener noreferrer"><img alt="Issues" src="./Configure VS Code for Clang_LLVM on macOS_files/issue.svg">Report issues</a></li><li id="connect-youtube"><a href="https://www.youtube.com/channel/UCs5Y5_7XK8HLDX0SLNwkd3w" target="_blank" rel="noopener noreferrer"><img alt="YouTube" src="./Configure VS Code for Clang_LLVM on macOS_files/youtube.svg">Watch videos</a></li></ul></div>
+        </div>
+    </div>
+</div>
+			</div>
+	</div>
+
+	<footer role="contentinfo" class="container">
+		<div class="footer-container">
+			<div class="footer-row">
+				<div class="footer-social">
+					<ul class="links">
+						<li>
+							<a href="https://go.microsoft.com/fwlink/?LinkID=533687"><img src="./Configure VS Code for Clang_LLVM on macOS_files/x-icon.svg" class="x-icon" alt="Follow us on X"></a>
+						</li>
+						<li>
+							<a href="https://github.com/microsoft/vscode"><img src="./Configure VS Code for Clang_LLVM on macOS_files/github-icon.svg" alt="VS Code on Github"></a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/@code"><img src="./Configure VS Code for Clang_LLVM on macOS_files/youtube-icon.svg" alt="VS Code on YouTube"></a>
+						</li>
+						<script>
+							function manageConsent() {
+								if (siteConsent && siteConsent.isConsentRequired) {
+									siteConsent.manageConsent();
+								}
+							}
+						</script>
+					</ul>
+					<a id="footer-microsoft-link" class="microsoft-logo" href="https://www.microsoft.com/">
+						<img src="./Configure VS Code for Clang_LLVM on macOS_files/microsoft.svg" alt="Microsoft homepage">
+					</a>
+				</div>
+			</div>
+			<div class="footer-row">
+				<ul class="links">
+					<li><a id="footer-support-link" href="https://support.serviceshub.microsoft.com/supportforbusiness/create?sapId=d66407ed-3967-b000-4cfb-2c318cad363d" target="_blank" rel="noopener">Support</a></li>
+					<li><a id="footer-privacy-link" href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener">Privacy</a></li>
+					<li style=""><a id="footer-cookie-link" style="cursor: pointer;" onclick="manageConsent()" target="_blank" rel="noopener">Manage Cookies</a></li>
+					<li><a id="footer-terms-link" href="https://www.microsoft.com/legal/terms-of-use" target="_blank" rel="noopener">Terms of Use</a></li>
+					<li><a id="footer-license-link" href="https://code.visualstudio.com/License" target="_blank" rel="noopener">License</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+	<script src="./Configure VS Code for Clang_LLVM on macOS_files/index.js"></script>
+
+	
+
+	<script type="application/ld+json">
+		{
+			"@context" : "http://schema.org",
+			"@type" : "SoftwareApplication",
+			"name" : "Visual Studio Code",
+			"softwareVersion": "1.96",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"applicationCategory": "DeveloperApplication",
+			"applicationSubCategory": "Text Editor",
+			"alternateName": "VS Code",
+			"datePublished": "2021-11-03",
+			"operatingSystem": "Mac, Linux, Windows",
+			"logo": "https://code.visualstudio.com/assets/apple-touch-icon.png",
+			"screenshot": "https://code.visualstudio.com/assets/home/home-screenshot-win.png",
+			"releaseNotes": "https://code.visualstudio.com/updates",
+			"downloadUrl": "https://code.visualstudio.com/download",
+			"license": "https://code.visualstudio.com/license",
+			"softwareRequirements": "https://code.visualstudio.com/docs/supporting/requirements",
+			"url" : "https://code.visualstudio.com",
+			"author": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"maintainer": {
+				"@type": "Organization",
+				"name": "Microsoft"
+			},
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://code.visualstudio.com/Search?q={search_term_string}",
+				"query-input": "required name=search_term_string"
+			},
+			"sameAs" : [
+				"https://en.wikipedia.org/wiki/Visual_Studio_Code",
+				"https://twitter.com/code",
+				"https://www.youtube.com/code",
+				"https://www.tiktok.com/@vscode",
+				"https://github.com/microsoft/vscode"
+			]
+		}
+	</script>
+
+</body></html>
